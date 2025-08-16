@@ -53,7 +53,7 @@ The app uses three main models:
 
 - **Unit Tests** Model validation, JSON serialization, service logic
 - **Widget Tests** UI components, navigation, user interactions
-- **Integration Tests** Complete user workflow from creation to deletion
+- **Integration Tests** Complete user workflow
 
 
 
@@ -67,7 +67,7 @@ The app uses three main models:
 
 ### Development Dependencies
 - **integration_test** Integration Testing
-- **flutter_lints** (^3.0.0): Official Flutter linting rules
+- **flutter_lints** (^5.0.0): Official Flutter linting rules
 
 ## Getting Started
 
