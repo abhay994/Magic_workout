@@ -12,21 +12,17 @@ class WorkoutSetsListWidget extends ConsumerStatefulWidget {
 }
 
 class _WorkoutSetsListWidgetState extends ConsumerState<WorkoutSetsListWidget> {
-
-  
   @override
   Widget build(BuildContext context) {
-
-     final sets = ref.watch(setsProvider);
-     return sets.isNotEmpty
+    final sets = ref.watch(setsProvider);
+    return sets.isNotEmpty
         ? ListView.builder(
-      itemBuilder: (context, i) {
-        return WorkoutSetDetailsWidget(setsModel: sets[i], index: i);
-      },
-      itemCount: sets.length,
-       controller: ref.read(setsProvider.notifier).scrollController,
-    )
+          itemBuilder: (context, i) {
+            return WorkoutSetDetailsWidget(setsModel: sets[i], index: i);
+          },
+          itemCount: sets.length,
+          controller: ref.read(setsProvider.notifier).scrollController,
+        )
         : WorkoutEmptySetsWidget();
   }
 }
-

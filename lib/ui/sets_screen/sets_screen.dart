@@ -17,6 +17,7 @@ class WorkoutScreen extends ConsumerStatefulWidget {
 
 class _WorkoutScreenState extends ConsumerState<WorkoutScreen> {
   final TextEditingController nameController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -24,7 +25,6 @@ class _WorkoutScreenState extends ConsumerState<WorkoutScreen> {
   }
 
   void _loadSetsId(int id){
-
     nameController.text = ref.read(workoutListProvider)[id].name;
     Future.delayed(Duration(microseconds: 100),(){
       ref.watch(setsProvider.notifier).load(workoutId: id);
@@ -38,9 +38,6 @@ class _WorkoutScreenState extends ConsumerState<WorkoutScreen> {
       );
       return;
     }
-
-
-
     if(widget.id!=null){
       ref.read(setsProvider.notifier).saveEdit(workoutId: widget.id!,name:nameController.text );}
     else{
@@ -49,6 +46,7 @@ class _WorkoutScreenState extends ConsumerState<WorkoutScreen> {
     ref.read(setsProvider.notifier).clear();
     context.go('/');
   }
+
 
   @override
   void dispose() {
@@ -65,7 +63,7 @@ class _WorkoutScreenState extends ConsumerState<WorkoutScreen> {
         actions: [
           Padding(
             padding:  EdgeInsets.all(8.0),
-            child: ElevatedButton(onPressed: ()=>save(), child:  const Text("Save")),
+            child: ElevatedButton(onPressed: ()=>save(), child:  const Text("Save"),key: const Key('save-workout'),),
           )
         ],
       ),
@@ -124,4 +122,5 @@ class _WorkoutScreenState extends ConsumerState<WorkoutScreen> {
       ),
     );
   }
+
 }

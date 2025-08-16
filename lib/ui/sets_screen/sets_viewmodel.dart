@@ -3,8 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:magic_workout/data/models/sets_model.dart';
 import 'package:magic_workout/ui/workout_list_screen/workout_list_viewmodel.dart';
 
-final setsProvider = NotifierProvider<SetsViewModel,List<SetsModel>>(SetsViewModel.new);
-class SetsViewModel extends Notifier<List<SetsModel>>{
+final setsProvider = NotifierProvider<SetsViewModel, List<SetsModel>>(
+  SetsViewModel.new,
+);
+
+class SetsViewModel extends Notifier<List<SetsModel>> {
   ScrollController scrollController = ScrollController();
 
   @override
@@ -12,37 +15,42 @@ class SetsViewModel extends Notifier<List<SetsModel>>{
 
   // Add NewSet
   addNewSet(SetsModel setsModel) {
-    state=[...state,setsModel];
+    state = [...state, setsModel];
+
     // Trigger the scroll .
-    WidgetsBinding.instance.addPostFrameCallback((_) => scrollController.jumpTo(scrollController.position.maxScrollExtent));
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => scrollController.jumpTo(scrollController.position.maxScrollExtent),
+    );
   }
 
-  saveEdit({required int workoutId,required String name}){
-    ref.read(workoutListProvider)[workoutId].name=name;
+  // Save Set
+  saveEdit({required int workoutId, required String name}) {
+    ref.read(workoutListProvider)[workoutId].name = name;
     ref.read(workoutListProvider)[workoutId].setsList = state;
   }
 
-  removeSet(int index){
+  // Remove Set
+  removeSet(int index) {
     state.removeAt(index);
-    state=[...state];
+    state = [...state];
     ref.read(setsProvider.notifier);
   }
 
-  updateSet(int index,SetsModel setsModel){
+  // Update Set
+  updateSet(int index, SetsModel setsModel) {
     state[index] = setsModel;
-    state=[...state];
+    state = [...state];
   }
 
-  clear(){
-    state=[];
-    state=[...state];
+  // Clear sets list
+  clear() {
+    state = [];
+    state = [...state];
   }
 
-  load({required int workoutId}){
+  // Load sets list from workout
+  load({required int workoutId}) {
     state = ref.read(workoutListProvider)[workoutId].setsList;
-    state=[...state];
+    state = [...state];
   }
-
-
-
 }

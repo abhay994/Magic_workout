@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 class WorkoutEmptySetsWidget extends StatefulWidget {
   const WorkoutEmptySetsWidget({super.key});
 

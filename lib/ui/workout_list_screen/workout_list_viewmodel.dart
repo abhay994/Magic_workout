@@ -6,38 +6,53 @@ import 'package:magic_workout/data/models/sets_model.dart';
 import 'package:magic_workout/data/models/workout_model.dart';
 import 'package:uuid/uuid.dart';
 
-final workoutListProvider = NotifierProvider<WorkoutViewModel,List<WorkoutModel>>(WorkoutViewModel.new);
-class WorkoutViewModel extends Notifier<List<WorkoutModel>>{
+final workoutListProvider =
+    NotifierProvider<WorkoutViewModel, List<WorkoutModel>>(
+      WorkoutViewModel.new,
+    );
 
+class WorkoutViewModel extends Notifier<List<WorkoutModel>> {
   @override
-  List<WorkoutModel> build() =>[];
+  List<WorkoutModel> build() => [];
 
+  // Load workouts from SharedPreference
+  loadWorkoutList() async {
+    String jsonData = await SharedPreference.instance.getData();
+    state =
+        (jsonDecode(jsonData) as List)
+            .map((workouts) => WorkoutModel.fromJson(workouts))
+            .toList();
+  }
 
-
-   loadWorkoutList() async{
-     String jsonData = await SharedPreference.instance.getData();
-     state = (jsonDecode(jsonData) as List).map((workouts)=>WorkoutModel.fromJson(workouts)).toList();
-   }
-
-
-  String generateId(){
+  // Generate unique id
+  String generateId() {
     return Uuid().v1();
   }
 
-  DateTime generateDate(){
+  // Generate current date
+  DateTime generateDate() {
     return DateTime.now();
   }
 
-  addWorkout({required String name,required List<SetsModel>  setsList }) async{
-    state=[...state,WorkoutModel(id: generateId(), name: name, date: generateDate(), setsList:setsList)];
-    await SharedPreference.instance.setSetData(jsonData: jsonEncode(state.map((v)=>v.toJson()).toList()));
+  // Add,Update workout
+  addWorkout({required String name, required List<SetsModel> setsList}) async {
+    state = [
+      ...state,
+      WorkoutModel(
+        id: generateId(),
+        name: name,
+        date: generateDate(),
+        setsList: setsList,
+      ),
+    ];
+    await SharedPreference.instance.setSetData(
+      jsonData: jsonEncode(state.map((v) => v.toJson()).toList()),
+    );
   }
 
-
-  removeWorkout(int index){
+  // Remove workout
+  removeWorkout(int index) {
     state.removeAt(index);
-    state=[...state];
+    state = [...state];
   }
-
-
 }

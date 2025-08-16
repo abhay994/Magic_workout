@@ -3,11 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:magic_workout/data/models/sets_model.dart';
 import 'package:magic_workout/ui/sets_screen/sets_viewmodel.dart';
+
 class WorkoutSetDialog extends ConsumerStatefulWidget {
   final SetsModel? setsModel;
   final int? setNumber;
-  final  bool newSet;
-  const WorkoutSetDialog({super.key,this.setsModel,this.setNumber,required this.newSet});
+  final bool newSet;
+
+  const WorkoutSetDialog({
+    super.key,
+    this.setsModel,
+    this.setNumber,
+    required this.newSet,
+  });
 
   @override
   ConsumerState createState() => _WorkoutSetDialogState();
@@ -26,13 +33,17 @@ class _WorkoutSetDialogState extends ConsumerState<WorkoutSetDialog> {
     load();
   }
 
-  load(){
-    selectedExercise = widget.setsModel!.exercise ?? Exercise.benchPress.displayName;
-    _weightController = TextEditingController(text: (widget.setsModel!.weight ?? 0).toString());
-    _repsController = TextEditingController(text: (widget.setsModel!.repetitions ?? 0).toString());
+  load() {
+    selectedExercise =
+        widget.setsModel!.exercise ?? Exercise.benchPress.displayName;
+    _weightController = TextEditingController(
+      text: (widget.setsModel!.weight ?? 0).toString(),
+    );
+    _repsController = TextEditingController(
+      text: (widget.setsModel!.repetitions ?? 0).toString(),
+    );
     _weightController.addListener(_updateSets);
     _repsController.addListener(_updateSets);
-
   }
 
   @override
@@ -42,13 +53,18 @@ class _WorkoutSetDialogState extends ConsumerState<WorkoutSetDialog> {
     super.dispose();
   }
 
-  void _updateSets(){
-    if(widget.setNumber!=null){
-    ref.read(setsProvider.notifier).updateSet(widget.setNumber!, widget.setsModel!.copyWith(
-        exercise: selectedExercise,
-        weight: double.tryParse(_weightController.text)?? 0,
-        repetitions: int.tryParse(_repsController.text)?? 0
-    ));
+  void _updateSets() {
+    if (widget.setNumber != null) {
+      ref
+          .read(setsProvider.notifier)
+          .updateSet(
+            widget.setNumber!,
+            widget.setsModel!.copyWith(
+              exercise: selectedExercise,
+              weight: double.tryParse(_weightController.text) ?? 0,
+              repetitions: int.tryParse(_repsController.text) ?? 0,
+            ),
+          );
     }
   }
 
@@ -62,8 +78,11 @@ class _WorkoutSetDialogState extends ConsumerState<WorkoutSetDialog> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
-            IconButton(onPressed: ()=>context.pop(), icon: Icon(Icons.cancel,color: Colors.redAccent,size: 20,) ),
-            SizedBox(height: 2,),
+            IconButton(
+              onPressed: () => context.pop(),
+              icon: Icon(Icons.cancel, color: Colors.redAccent, size: 20),
+            ),
+            SizedBox(height: 2),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -78,6 +97,7 @@ class _WorkoutSetDialogState extends ConsumerState<WorkoutSetDialog> {
             ),
             const SizedBox(height: 8),
             DropdownButtonFormField<String>(
+              key: ValueKey('select-exercise'),
               value: selectedExercise,
               onChanged: (String? value) {
                 if (value != null) {
@@ -87,12 +107,14 @@ class _WorkoutSetDialogState extends ConsumerState<WorkoutSetDialog> {
                   _updateSets();
                 }
               },
-              items: Exercise.values.map((Exercise exercise) {
-                return DropdownMenuItem<String>(
-                  value: exercise.displayName,
-                  child: Text(exercise.displayName),
-                );
-              }).toList(),
+              items:
+                  Exercise.values.map((Exercise exercise) {
+                    return DropdownMenuItem<String>(
+                      key: ValueKey('exercise-${exercise.displayName}'),
+                      value: exercise.displayName,
+                      child: Text(exercise.displayName),
+                    );
+                  }).toList(),
               decoration: const InputDecoration(
                 labelText: 'Exercise',
                 border: OutlineInputBorder(),
@@ -103,6 +125,7 @@ class _WorkoutSetDialogState extends ConsumerState<WorkoutSetDialog> {
               children: [
                 Expanded(
                   child: TextField(
+                    key: ValueKey('weight'),
                     controller: _weightController,
                     keyboardType: TextInputType.number,
                     decoration: const InputDecoration(
@@ -115,6 +138,7 @@ class _WorkoutSetDialogState extends ConsumerState<WorkoutSetDialog> {
                 const SizedBox(width: 8),
                 Expanded(
                   child: TextField(
+                    key: ValueKey('repetition'),
                     controller: _repsController,
                     keyboardType: TextInputType.number,
                     decoration: const InputDecoration(
@@ -127,17 +151,23 @@ class _WorkoutSetDialogState extends ConsumerState<WorkoutSetDialog> {
               ],
             ),
             const SizedBox(height: 8),
-            if(widget.newSet)
-            TextButton(onPressed: (){
-              ref.read(setsProvider.notifier).addNewSet(
-                  SetsModel(
-                      exercise: selectedExercise,
-                      weight: double.tryParse(_weightController.text)?? 0,
-                      repetitions: int.tryParse(_repsController.text)?? 0
-                  ));
-              context.pop();
-            }, child: Text('save'))
-
+            if (widget.newSet)
+              TextButton(
+                key: ValueKey('save-set'),
+                onPressed: () {
+                  ref
+                      .read(setsProvider.notifier)
+                      .addNewSet(
+                        SetsModel(
+                          exercise: selectedExercise,
+                          weight: double.tryParse(_weightController.text) ?? 0,
+                          repetitions: int.tryParse(_repsController.text) ?? 0,
+                        ),
+                      );
+                  context.pop();
+                },
+                child: Text('save'),
+              ),
           ],
         ),
       ),

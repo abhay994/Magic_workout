@@ -6,26 +6,18 @@ enum Exercise {
   squat('Squat');
 
   const Exercise(this.displayName);
-  final String displayName;
 
+  final String displayName;
 }
 
-class SetsModel{
+class SetsModel {
   String? exercise;
   double? weight;
   int? repetitions;
 
-  SetsModel({
-    this.exercise,
-    this.weight,
-    this.repetitions,
-  });
+  SetsModel({this.exercise, this.weight, this.repetitions});
 
-  SetsModel copyWith({
-    String? exercise,
-    double? weight,
-    int? repetitions,
-  }) {
+  SetsModel copyWith({String? exercise, double? weight, int? repetitions}) {
     return SetsModel(
       exercise: exercise ?? this.exercise,
       weight: weight ?? this.weight,
@@ -42,10 +34,6 @@ class SetsModel{
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'exercise': exercise,
-      'weight': weight,
-      'repetitions': repetitions,
-    };
+    return {'exercise': exercise, 'weight': weight, 'repetitions': repetitions};
   }
 }

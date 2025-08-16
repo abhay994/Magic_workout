@@ -1,6 +1,6 @@
 import 'package:magic_workout/data/models/sets_model.dart';
 
-class WorkoutModel{
+class WorkoutModel {
   String id;
   String name;
   DateTime date;
@@ -10,7 +10,7 @@ class WorkoutModel{
     required this.id,
     required this.name,
     required this.date,
-    required this.setsList
+    required this.setsList,
   });
 
   Map<String, dynamic> toJson() {
@@ -28,9 +28,8 @@ class WorkoutModel{
       name: json['name'],
       date: DateTime.parse(json['date']),
       setsList: (json['sets'] as List)
-          .map((setJson) => SetsModel.fromJson(setJson))
-          .toList(),
+              .map((setJson) => SetsModel.fromJson(setJson))
+              .toList(),
     );
   }
-
 }

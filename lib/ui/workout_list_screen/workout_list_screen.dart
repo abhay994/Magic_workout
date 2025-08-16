@@ -11,10 +11,12 @@ class WorkoutListScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     ref.read(workoutListProvider.notifier).loadWorkoutList();
     return Scaffold(
-      appBar: AppBar(title: const Text('My Workout',key: ValueKey('workoutListTitle'))),
+      appBar: AppBar(
+        title: const Text('My Workout', key: ValueKey('workoutListTitle')),
+      ),
       body: WorkoutListWidget(),
       floatingActionButton: FloatingActionButton(
-        onPressed: ()=> context.go('/workout'),
+        onPressed: () => context.go('/workout'),
         child: const Icon(Icons.add),
       ),
     );
